@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
     const safeMessage = escapeHtml(message);
 
     const { data, error } = await resend.emails.send({
-      from: "Your Name <you@example.com>",
+      from: "Lakshay Kumar <onboarding@resend.dev>",
       to: ["lakshaykuamr734@gmail.com"],
       replyTo: email,
       subject: `New Collab Request — ${name}`,

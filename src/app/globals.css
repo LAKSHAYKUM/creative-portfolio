@@ -192,3 +192,26 @@ iframe {
     z-index: 10;
   }
 }
+/* Spotlight Effect - Isse body ke background par light dikhegi */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    600px circle at var(--mouse-x) var(--mouse-y),
+    rgba(29, 78, 216, 0.1), /* Yahan Blue glow ka color hai (halka sa) */
+    transparent 80%
+  );
+  pointer-events: none; /* Isse light ke peeche wali cheezein click hongi */
+  z-index: -1; /* Light sabse peeche rahegi */
+  opacity: 0; /* Shuru mein hidden rahegi */
+  transition: opacity 0.3s ease; /* Smooth fade-in */
+}
+
+/* Jab mouse body par aaye, toh light show ho */
+body:hover::before {
+  opacity: 1;
+}

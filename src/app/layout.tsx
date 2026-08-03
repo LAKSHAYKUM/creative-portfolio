@@ -1,3 +1,5 @@
+"use client"; // 1. Yahan "use client" add kiya hai
+
 import type { Metadata } from "next";
 import { Poppins, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
@@ -10,6 +12,7 @@ import StructuredData from "@/components/common/structured-data";
 import Analytics from "@/components/common/analytics";
 import ConsoleLog from "@/components/common/console-log";
 import CustomCursor from "@/components/ui/custom-cursor";
+import { useEffect } from "react"; // 2. useEffect import kiya
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -25,117 +28,29 @@ const cormorantGaramond = Cormorant_Garamond({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(BASE_URL),
-  title: {
-    default: "Lakshay Kumar - Professional Portfolio & Digital Services",
-    template: "%s | Lakshay Kumar",
-  },
-  description:
-    "Professional portfolio showcasing web development, design, and digital solutions. Expert in modern web technologies, creative design, and innovative digital experiences.",
-  keywords: [
-    "Web Development",
-    "Portfolio",
-    "Digital Services",
-    "Web Design",
-    "UI/UX Design",
-    "Frontend Development",
-    "Next.js",
-    "React",
-    "TypeScript",
-    "Full Stack Developer",
-    "Creative Solutions",
-  ],
-  authors: [{ name: "Lakshay Kumar" }],
-  creator: "Lakshay Kumar",
-  publisher: "Lakshay Kumar",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: BASE_URL,
-    title: "Lakshay Kumar - Professional Portfolio & Digital Services",
-    description:
-      "Explore a portfolio featuring cutting-edge web development projects, creative designs, and innovative digital solutions.",
-    siteName: "Lakshay Kumar",
-    images: [
-      {
-        url: OG_IMAGE,
-        width: 1200,
-        height: 630,
-        alt: "Portfolio preview",
-        type: "image/jpeg",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Lakshay Kumar - Professional Portfolio & Digital Services",
-    description:
-      "Explore a portfolio featuring cutting-edge web development projects, creative designs, and innovative digital solutions.",
-    creator: "@lakshay_5042",
-    images: [
-      {
-        url: OG_IMAGE,
-        width: 1200,
-        height: 630,
-        alt: "Portfolio preview",
-      },
-    ],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-  icons: {
-    icon: [
-      { url: "/icon" },
-      { url: "/md-red-logo.svg", type: "image/svg+xml" },
-    ],
-    shortcut: "/md-red-logo.svg",
-    apple: "/md-red-logo.svg",
-  },
-  manifest: "/manifest.webmanifest",
-  verification: {
-    google: "your-google-verification-code",
-    // yandex: "your-yandex-verification-code",
-    // bing: "your-bing-verification-code",
-  },
-  alternates: {
-    canonical: BASE_URL,
-  },
-  category: "technology",
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // suppressHydrationWarning: next-themes adds the `class="dark"` +
-  // `color-scheme` style to <html> on the client, which the server can't know
-  // about — this tells React to ignore that expected attribute mismatch.
+  
+  // 3. Yeh raha mouse tracking logic jo spotlight ko chalayega
+  useEffect(() => {
+    const updateMousePosition = (ev: MouseEvent) => {
+      document.documentElement.style.setProperty("--mouse-x", ev.clientX + "px");
+      document.documentElement.style.setProperty("--mouse-y", ev.clientY + "px");
+    };
+
+    window.addEventListener("mousemove", updateMousePosition);
+
+    return () => {
+      window.removeEventListener("mousemove", updateMousePosition);
+    };
+  }, []);
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/*
-          The hero video (/hv.webm) is eagerly buffered by its own
-          <video preload="auto" fetchpriority="high"> in AboutMe. We intentionally
-          do NOT use <link rel="preload" as="video"> — browsers reject "video" as
-          an unsupported `as` value, which is what triggered the console warning.
-        */}
-
         {/* Warm up Vimeo connections early so ShowReel iframes load faster */}
         <link rel="preconnect" href="https://player.vimeo.com" />
         <link rel="preconnect" href="https://i.vimeocdn.com" />
@@ -167,7 +82,6 @@ export default function RootLayout({
             <Navbar />
             {children}
             <FooterSection />
-            {/* <FloatingDockDemo /> */}
           </LenisWrapper>
         </ThemeProvider>
       </body>
