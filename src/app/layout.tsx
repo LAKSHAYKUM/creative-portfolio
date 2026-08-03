@@ -13,6 +13,7 @@ import Analytics from "@/components/common/analytics";
 import ConsoleLog from "@/components/common/console-log";
 import CustomCursor from "@/components/ui/custom-cursor";
 import { useEffect } from "react"; // 2. useEffect import kiya
+import { SpeedInsights } from "@vercel/speed-insights/next"; // Vercel Speed Insights import kiya
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -84,6 +85,7 @@ export default function RootLayout({
             <FooterSection />
           </LenisWrapper>
         </ThemeProvider>
+        <SpeedInsights /> {/* Yahan SpeedInsights component render kiya hai */}
       </body>
     </html>
   );
