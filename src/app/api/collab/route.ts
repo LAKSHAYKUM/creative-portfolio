@@ -3,7 +3,8 @@ import { Resend } from "resend";
 
 // Add RESEND_API_KEY to your .env.local
 // Your sending domain must be verified in the Resend dashboard
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Use a placeholder during build time if the API key is not set
+const resend = new Resend(process.env.RESEND_API_KEY || "re_placeholder");
 
 function escapeHtml(str: string): string {
   return str
@@ -16,6 +17,15 @@ function escapeHtml(str: string): string {
 
 export async function POST(req: NextRequest) {
   try {
+    // Check if API key is configured
+    if (!process.env.RESEND_API_KEY) {
+      console.error("RESEND_API_KEY is not configured");
+      return NextResponse.json(
+        { error: "Email service not configured" },
+        { status: 503 }
+      );
+    }
+
     const body = await req.json();
     const { name, email, projectType, message } = body as {
       name?: string;
